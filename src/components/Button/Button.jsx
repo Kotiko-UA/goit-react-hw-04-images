@@ -1,13 +1,5 @@
-import { Component } from 'react';
 import { ButtonLoadMore } from './Button.styled';
 
-class Button extends Component {
-  state = {};
-  render() {
-    return (
-      <ButtonLoadMore onClick={this.props.onLoadMore}>Load more</ButtonLoadMore>
-    );
-  }
-}
-
-export default Button;
+export const Button = ({ onLoadMore }) => {
+  return <ButtonLoadMore onClick={onLoadMore}>Load more</ButtonLoadMore>;
+};

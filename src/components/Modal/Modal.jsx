@@ -1,24 +1,20 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { ModalDiv, Overlay } from './Modal.styled';
 
-class Modal extends Component {
-  state = {};
-  componentDidMount() {
-    window.addEventListener('keydown', this.props.onExitModal);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.props.onExitModal);
-  }
+export const Modal = props => {
+  useEffect(() => {
+    window.addEventListener('keydown', props.onExitModal);
 
-  render() {
-    return (
-      <Overlay onClick={this.props.onExitModal}>
-        <ModalDiv>
-          <img src={this.props.modalUrl} alt={this.props.alt} />
-        </ModalDiv>
-      </Overlay>
-    );
-  }
-}
+    return () => {
+      window.removeEventListener('keydown', props.onExitModal);
+    };
+  }, [props.onExitModal]);
 
-export default Modal;
+  return (
+    <Overlay onClick={props.onExitModal}>
+      <ModalDiv>
+        <img src={props.modalUrl} alt={props.alt} />
+      </ModalDiv>
+    </Overlay>
+  );
+};
