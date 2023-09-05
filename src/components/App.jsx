@@ -44,11 +44,14 @@ export const App = () => {
         if (page === 1) {
           toast.success(`You have ${imgs.totalHits} images`);
         }
-
-        window.scrollBy({
-          top: 520,
-          behavior: 'smooth',
-        });
+        if (page !== 1) {
+          setTimeout(() => {
+            window.scrollBy({
+              top: 520,
+              behavior: 'smooth',
+            });
+          }, 0);
+        }
       } catch (error) {
         toast.error('Wow! Something went wrong!');
       } finally {
