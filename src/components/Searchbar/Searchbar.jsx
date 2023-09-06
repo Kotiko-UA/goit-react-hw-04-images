@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import {
   FormInput,
@@ -8,40 +8,37 @@ import {
 } from './Searchbar.styled';
 import { toast } from 'react-hot-toast';
 
-class Searchbar extends Component {
-  state = { input: '' };
-  onInput = ({ target }) => {
-    this.setState({ input: target.value });
+export const Searchbar = props => {
+  const [input, setInput] = useState('');
+
+  const onInput = ({ target }) => {
+    setInput(target.value);
   };
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
     if (e.target.elements.search.value === '') {
       toast.error('Gotta write something!');
       return;
     }
-    this.props.onSearchSubmit(e);
+    props.onSearchSubmit(e);
   };
-  render() {
-    return (
-      <HeaderWrap>
-        <SearchForm onSubmit={this.onSubmit}>
-          <SearchFormButton type="submit">
-            <BsSearch size={36} />
-          </SearchFormButton>
+  return (
+    <HeaderWrap>
+      <SearchForm onSubmit={onSubmit}>
+        <SearchFormButton type="submit">
+          <BsSearch size={36} />
+        </SearchFormButton>
 
-          <FormInput
-            onChange={this.onInput}
-            type="text"
-            name="search"
-            value={this.state.input}
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-          />
-        </SearchForm>
-      </HeaderWrap>
-    );
-  }
-}
-
-export default Searchbar;
+        <FormInput
+          onChange={onInput}
+          type="text"
+          name="search"
+          value={input}
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+        />
+      </SearchForm>
+    </HeaderWrap>
+  );
+};
