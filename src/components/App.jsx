@@ -58,7 +58,7 @@ export const App = () => {
         setLoading(false);
       }
     }
-    if (searchText.length !== 0) searchFunc();
+    if (searchText !== '') searchFunc();
   }, [searchText, page]);
 
   const onLoadMore = () => {
