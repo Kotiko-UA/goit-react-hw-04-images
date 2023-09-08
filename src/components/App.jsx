@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Wrapper, NoImg } from './App.styled';
 import { Button } from './Button/Button';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -26,11 +26,21 @@ export const App = () => {
     setPage(1);
   };
 
+  const controllerRef = useRef();
+
   useEffect(() => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    controllerRef.current = new AbortController();
     async function searchFunc() {
       try {
         setLoading(true);
-        const imgs = await searchImg(searchText, page);
+        const imgs = await searchImg(
+          searchText,
+          page,
+          controllerRef.current.signal
+        );
         if (imgs.hits.length === 0) {
           toast.error('Your search did not match anything!');
           return;
@@ -53,7 +63,9 @@ export const App = () => {
           }, 0);
         }
       } catch (error) {
-        toast.error('Wow! Something went wrong!');
+        if (error.code !== 'ERR_CANCELED') {
+          toast.error('Wow! Something went wrong!');
+        }
       } finally {
         setLoading(false);
       }
